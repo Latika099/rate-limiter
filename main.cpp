@@ -109,9 +109,15 @@ int main(int argc, char* argv[]) {
 
     // CLI config
     if (argc >= 3) {
+    try {
         maxReq = stoi(argv[1]);
         windowSec = stoi(argv[2]);
+    } catch (...) {
+        cout << "Invalid CLI arguments. Using default values.\n";
     }
+} else {
+    cout << "Using default config: maxReq=5, windowSec=5\n";
+}
 
     RateLimiter limiter(maxReq, windowSec);
     limiter.setClientLimit("A", 3, 5);   // stricter
