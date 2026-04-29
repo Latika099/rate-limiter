@@ -3,6 +3,7 @@
 #include <vector>
 #include <ctime>
 #include<string>
+
 using namespace std;
 
 // RateLimiter supports:
@@ -12,6 +13,7 @@ using namespace std;
 class RateLimiter {
 private:
     int maxRequests;
+
     int windowSeconds;
     unordered_map<string, pair<int,int>> clientConfig;
 // client_id -> {maxRequests, windowSeconds}
@@ -33,16 +35,16 @@ public:
 
     // Fixed Window
    bool allowFixed(string client_id) {
+    
 
     int maxReq = maxRequests;
     int windowSec = windowSeconds;
 
-    // override if client-specific config exists
     auto it = clientConfig.find(client_id);
-if (it != clientConfig.end()) {
-    maxReq = it->second.first;
-    windowSec = it->second.second;
-}
+    if (it != clientConfig.end()) {
+        maxReq = it->second.first;
+        windowSec = it->second.second;
+    }
 
     long long current = getTime();
 
@@ -69,22 +71,21 @@ if (it != clientConfig.end()) {
 
     // Sliding Window
     bool allowSliding(string client_id) {
+  
 
     int maxReq = maxRequests;
     int windowSec = windowSeconds;
 
-    // override if client-specific config exists
     auto it = clientConfig.find(client_id);
     if (it != clientConfig.end()) {
-    maxReq = it->second.first;
-    windowSec = it->second.second;
-}
+        maxReq = it->second.first;
+        windowSec = it->second.second;
+    }
 
     long long current = getTime();
 
     vector<long long> &timestamps = slidingWindow[client_id];
 
-    // remove old timestamps
     vector<long long> newWindow;
     for (long long t : timestamps) {
         if (current - t < windowSec)
@@ -136,8 +137,8 @@ int main(int argc, char* argv[]) {
             }
 
             cout << time(0) << " | " << client
-                 << " | FixedWindow: " << (fixedAllowed ? "ALLOWED" : "RATE_LIMITED")
-                 << " | SlidingWindow: " << (slidingAllowed ? "ALLOWED" : "RATE_LIMITED")
+                 << " | Fixed: " << (fixedAllowed ? "ALLOWED" : "RATE_LIMITED")
+                 << " | Sliding: " << (slidingAllowed ? "ALLOWED" : "RATE_LIMITED")
                  << endl;
         }
     }
