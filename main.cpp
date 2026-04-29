@@ -144,9 +144,9 @@ int main(int argc, char* argv[]) {
 
         long long ts = time(0);
 
-cout << ts << " | " << client
+     cout << ts << " | " << client
      << " | Fixed: " << (fixedAllowed ? "ALLOWED" : "RATE_LIMITED")
-     << " | Sliding: " << (slidingAllowed ? "ALLOWED" : "RATE_LIMITED")
+     << " | Sliding: " << (slidingAllowed ? "ALLOWED" : "RATE_LIMITED")//clean output
      << endl;
     }
 }
