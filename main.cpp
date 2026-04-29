@@ -127,27 +127,27 @@ int main(int argc, char* argv[]) {
     int total = 0, allowedCount = 0, rejectedCount = 0;
     unordered_map<string, int> clientAllowed;
 
-    for (int i = 0; i < 20; i++) {
-        for (string client : clients) {
+   for (int round = 0; round < 20; round++) {
+    for (string client : clients) {
 
-            bool fixedAllowed = limiter.allowFixed(client);
-            bool slidingAllowed = limiter.allowSliding(client);
+        bool fixedAllowed = limiter.allowFixed(client);
+        bool slidingAllowed = limiter.allowSliding(client);
 
-            total++;
+        total++;
 
-            if (fixedAllowed) {
-                allowedCount++;
-                clientAllowed[client]++;
-            } else {
-                rejectedCount++;
-            }
-
-            cout << time(0) << " | " << client
-                 << " | Fixed: " << (fixedAllowed ? "ALLOWED" : "RATE_LIMITED")
-                 << " | Sliding: " << (slidingAllowed ? "ALLOWED" : "RATE_LIMITED")
-                 << endl;
+        if (fixedAllowed) {
+            allowedCount++;
+            clientAllowed[client]++;
+        } else {
+            rejectedCount++;
         }
+
+        cout << time(0) << " | " << client
+             << " | Fixed: " << (fixedAllowed ? "ALLOWED" : "RATE_LIMITED")
+             << " | Sliding: " << (slidingAllowed ? "ALLOWED" : "RATE_LIMITED")
+             << endl;
     }
+}
 
     // ===== SUMMARY =====
     cout << "\n===== SUMMARY =====\n";
